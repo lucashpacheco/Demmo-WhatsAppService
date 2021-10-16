@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  demmo-whatsappservice:
+    image: ${DOCKER_REGISTRY-}demmowhatsappservice
+    build:
+      context: .
+      dockerfile: Demmo-WhatsAppService/Dockerfile
+    ports:
+      - "7001:443"
+    environment:
+      MongoDbSettings__ConnectionString: 'mongodb://admin:abc123!@demmowhatsapp.db'
+    depends_on:
+      - demmowhatsapp.db
+
+  demmowhatsapp.db:
+    image: 'mongo'
+    ports:
+      - '27017:27017'
+    container_name: ${DOCKER_REGISTRY-}mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'admin'
+      MONGO_INITDB_ROOT_PASSWORD: 'abc123!'
